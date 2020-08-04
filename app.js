@@ -15,8 +15,14 @@ mongoose.connect('mongodb://localhost/postdb', {
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
-    title: String,
-    body: String,
+    title: {
+        type: String,
+        required: true,
+    },
+    body: {
+        type: String,
+        required: true,
+    },
     date: Date
 });
 
@@ -32,26 +38,43 @@ app.get('/posts', (req, res) => {
     });
 });
 
+// create post
 app.post('/posts', (req, res) => {
     const post = new Post(req.body);
-    post.save();
-    res.json(post);
+    post.save(err => {
+        if (err) {
+            res.json({ message: err.message });
+        }
+        res.json(post);
+    });
 });
 
 app.get('/posts/:id', (req, res) => {
     const post = Post.findById(req.params.id, (err, post) => {
+        if (err) {
+            res.json({ message: err.message });
+        }
         res.json(post);
     });
 });
 
 app.put('/posts/:id', (req, res) => {
-    Post.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, post) => {
+    Post.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true }, (err, post) => {
+        if (err) {
+            res.json({ message: err.message });
+        }
+
         res.json(post);
-    })
+    });
 });
 
+
 app.delete('/posts/:id', (req, res) => {
-    Post.findOneAndDelete(req.params.id, (err, post) => {
+    Post.findByIdAndDelete(req.params.id, (err, post) => {
+        if (err) {
+            res.json({ message: err.message });
+        }
+
         res.json(post);
     });
 });
