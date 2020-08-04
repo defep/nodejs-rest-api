@@ -1,2 +1,2 @@
-# node-rest-api
+# nodejs-rest-api
 REST API example made with Node.js
