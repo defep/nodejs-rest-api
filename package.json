@@ -19,6 +19,6 @@
   "homepage": "https://github.com/defep/nodejs-rest-api#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.9.27"
+    "mongoose": "^5.13.15"
   }
 }
